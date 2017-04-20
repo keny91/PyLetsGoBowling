@@ -1,0 +1,41 @@
+#! python3
+
+
+import cv2
+# import time
+import sys
+import time
+# from builtins import print
+from Scripts import ImageProcessing as process
+from Scripts import FrameExtraction as frame
+
+"""
+image = cv2.imread("./Images/lena.jpg")
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+cv2.imshow("Over the Clouds", image)
+cv2.imshow("Over the Clouds - gray", gray_image)
+# time.sleep(7)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+"""
+
+SCREEN_COOR_DIM = (100, 100, 400, 400)
+
+
+def main():
+    print(sys.version)
+    last_time = time.time()
+    while True:
+        printScreen_numpy = frame.getFrameFromSquare(SCREEN_COOR_DIM)
+        # colorCorrectedImage = cv2.cvtColor(printScreen_numpy, cv2.COLOR_BGR2RGB)
+        canny_edges = process.ProcessImage(printScreen_numpy)
+        print('Loop took: {} seconds'.format(time.time() - last_time))  # Debug info
+        last_time = time.time()
+
+        cv2.imshow('window', canny_edges)
+        if cv2.waitKey(25) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
+            break
+
+
+main()
