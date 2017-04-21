@@ -8,6 +8,8 @@ import time
 # from builtins import print
 from Scripts import ImageProcessing as process
 from Scripts import FrameExtraction as frame
+from Scripts import GameControl as game
+from Scripts.DirectKeys import ReleaseKey, PressKey, W, A, S, D
 
 """
 image = cv2.imread("./Images/lena.jpg")
@@ -19,16 +21,22 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 """
 
-SCREEN_COOR_DIM = (100, 100, 400, 400)
+SCREEN_COOR_DIM = (10, 40, 800, 600)
 
 
 def main():
     print(sys.version)
     last_time = time.time()
+
+    game.WaitLoop()
+    PressKey(W)
+    # game.WaitLoop()
+    # ReleaseKey(W)
+
     while True:
         printScreen_numpy = frame.getFrameFromSquare(SCREEN_COOR_DIM)
         # colorCorrectedImage = cv2.cvtColor(printScreen_numpy, cv2.COLOR_BGR2RGB)
-        canny_edges = process.ProcessImage(printScreen_numpy)
+        canny_edges = process.ExtractCannyEdges(printScreen_numpy)
         print('Loop took: {} seconds'.format(time.time() - last_time))  # Debug info
         last_time = time.time()
 
